@@ -215,6 +215,8 @@ players[0].socket.send(board_info_1)
 board_info_2 = f"{board_size[0]} {board_size[1]} {num_pegs} {num_rubberbands} {2}\n".encode()
 players[1].socket.send(board_info_2)
 
+time.sleep(0.3)
+
 ######
 # Peg placement phase 
 for round in range(num_pegs):
