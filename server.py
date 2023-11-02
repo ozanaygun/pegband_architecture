@@ -6,10 +6,11 @@ import matplotlib.path as mpath
 import matplotlib.pyplot as plt
 from shapely.geometry import Polygon
 from shapely.ops import cascaded_union
+import multiprocessing
 
 # Define the game board size and initial state
 board_size = (8, 8)
-num_pegs = 4
+num_pegs = 3
 num_rubberbands = 1
 board = [0] * (board_size[0] * board_size[1])
 # Initialize the server
@@ -145,6 +146,7 @@ def rubberband_validity(peg1, peg2, board_size, enemy_pegs):
                 illegal_move = True
 
     return positions, check_cross_move, illegal_cross_move
+
 
 # Expand the polygon slightly to account for grid center intersections
 def expand_polygon(polygon_points, expansion_factor=0.001):
@@ -324,7 +326,7 @@ for round in range(num_rubberbands):
 
 
             proposed_rubberband = list(set(proposed_rubberband))
-            temp_points = len(proposed_rubberband)
+        temp_points = len(proposed_rubberband)
         
         #print(player.rubberband_coordinates)
         #print(proposed_rubberband)

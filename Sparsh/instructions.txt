@@ -1,0 +1,4 @@
+1. `cd` into this folder
+2. run `module load gcc-11.2`
+3. run `make`
+4. run `./client` (this will take about 100 seconds)
