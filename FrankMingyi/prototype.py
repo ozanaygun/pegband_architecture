@@ -10,10 +10,10 @@ from shapely.ops import cascaded_union
 random.seed(0)
 
 # Define the game board size and initial state
-n = 5
+n = 17
 board_size = (n, n)
-num_pegs = 2
-num_rubberbands = 2
+num_pegs = 6
+num_rubberbands = 3
 board = [0] * (board_size[0] * board_size[1])
 
 class Player:
@@ -165,12 +165,13 @@ class Player:
         block_indices = []
         enemy_polygons = []
         for _, _, polygon in enemy_polygon_candidates:
-            if len(polygon) > 2: 
-                enemy_polygons.append(Polygon(self.pegs_to_points(polygon)))
-            elif len(polygon) == 2:
-                enemy_polygons.append(LineString(self.pegs_to_points(polygon)))
-            else:
-                enemy_polygons.append(Point(self.pegs_to_points(polygon)))
+            points = self.pegs_to_points(polygon)
+            if len(points) > 2: 
+                enemy_polygons.append(Polygon(points))
+            elif len(points) == 2:
+                enemy_polygons.append(LineString(points))
+            elif len(points) == 1:
+                enemy_polygons.append(Point(points[0]))
         pegs_in_enemy_polygon = np.array([[1 if Point(i,j).within(polygon) else 0 for polygon in enemy_polygons] for i in range(self.board_length) for j in range(self.board_width)])
         enemy_polygon_scores = np.array([score for score, _, _ in enemy_polygon_candidates])
         pegs_block_score = pegs_in_enemy_polygon @ enemy_polygon_scores
@@ -259,7 +260,25 @@ class Player:
             self.enemy_polygon_candidates = self.find_polygon(self.enemy_pegs, self.peg_coordinates, self.enemy_polygon_candidates)
         if self.board_length > 0:
             f, b = self.candidate_points(self.peg_coordinates, self.enemy_pegs, self.polygon_candidates, self.enemy_polygon_candidates)
+            # if self.polygon_candidates and self.enemy_polygon_candidates and self.enemy_polygon_candidates[0][0] > self.polygon_candidates[0][0]*2:
+            #     if self.player_color == 1:
+            #         position = f
+            #     else:
+            #         if b is not None:
+            #             position = b
+            #         else:
+            #             position = f
+            # else:
+            #     if self.player_color == 1:
+            #         if b is not None:
+            #             position = b
+            #         else:
+            #             position = f
+            #     else:
+            #         position = f
             if self.polygon_candidates and self.enemy_polygon_candidates and self.enemy_polygon_candidates[0][0] > self.polygon_candidates[0][0]*2:
+                position = f
+            else:
                 if b is not None:
                     position = b
                 else:
@@ -524,97 +543,97 @@ class Player:
     
 # Simulation
 
-# def display_board(board, board_length, board_width):
+def display_board(board, board_length, board_width):
 
-#     mapping = {
-#         0: '*',
-#         1: 'G',
-#         2: 'B',
-#         3: 'g',
-#         4: 'b'
-#     }
+    mapping = {
+        0: '*',
+        1: 'G',
+        2: 'B',
+        3: 'g',
+        4: 'b'
+    }
 
-#     for i in range(board_length):
-#         for j in range(board_width):
-#             index = i * board_length + j
-#             print(mapping.get(board[index], '?'), end=' ')
-#         print()
+    for i in range(board_length):
+        for j in range(board_width):
+            index = i * board_length + j
+            print(mapping.get(board[index], '?'), end=' ')
+        print()
 
-# # Create player objects and store them in a list
-# players = []
-# for i in range(2):
-#     players.append(Player(board_size[0], board_size[1], num_pegs, num_rubberbands, i+1))
+# Create player objects and store them in a list
+players = []
+for i in range(2):
+    players.append(Player(board_size[0], board_size[1], num_pegs, num_rubberbands, i+1))
 
-# ######
-# # Peg placement phase 
-# for round in range(num_pegs):
-#     player_index = 1
-#     other_player_index = 2
-#     for player in players:
-#         # Send the current board with peg positions
-#         player.board = board.copy()
-#         position = player.place_pegs()
+######
+# Peg placement phase 
+for round in range(num_pegs):
+    player_index = 1
+    other_player_index = 2
+    for player in players:
+        # Send the current board with peg positions
+        player.board = board.copy()
+        position = player.place_pegs()
 
-#         # Update the board with the player's peg
-#         if(position >= 0 and position < board_size[0] * board_size[1]):
-#             if(board[position] == player_index):
-#                 print(f"{player.name}, you have already placed a peg in this position!")
-#             elif(board[position] == other_player_index):
-#                 print(f"{players[other_player_index-1].name} has a peg in this position! No peg is placed by {player.name}!")
-#             else:
-#                 board[position] = player_index  # Alternates between Player 1 and Player 2
-#                 print(f"{player.name} placed a peg at location {position}.")
-#         else:
-#             print(f"Coordinate out of range! No peg is placed by {player.name}!")
-#         player_index = 2
-#         other_player_index = 1
+        # Update the board with the player's peg
+        if(position >= 0 and position < board_size[0] * board_size[1]):
+            if(board[position] == player_index):
+                print(f"{player.name}, you have already placed a peg in this position!")
+            elif(board[position] == other_player_index):
+                print(f"{players[other_player_index-1].name} has a peg in this position! No peg is placed by {player.name}!")
+            else:
+                board[position] = player_index  # Alternates between Player 1 and Player 2
+                print(f"{player.name} placed a peg at location {position}.")
+        else:
+            print(f"Coordinate out of range! No peg is placed by {player.name}!")
+        player_index = 2
+        other_player_index = 1
 
 
-# players[0].board = board.copy()
-# players[1].board = board.copy()
+players[0].board = board.copy()
+players[1].board = board.copy()
 
-# # Display the board
-# print("Initial board")
-# display_board(board, board_size[0], board_size[1])
-# print("-----")
-# print("Rubberband placement phase")
-# print("-----")
-# time.sleep(0.3)
-# #########
-# # Rubberband placement phase 
-# for round in range(num_rubberbands):
-#     player_index = 1
-#     other_player = 2
-#     for player in players:
-#         player.board = board.copy()
-#         rubberband_edges = player.place_rubberbands()
+# Display the board
+print("Initial board")
+display_board(board, board_size[0], board_size[1])
+print("-----")
+print("Rubberband placement phase")
+print("-----")
+time.sleep(0.3)
+#########
+# Rubberband placement phase 
+for round in range(num_rubberbands):
+    player_index = 1
+    other_player = 2
+    for player in players:
+        player.board = board.copy()
+        rubberband_edges = player.place_rubberbands()
 
-#         temp_points, illegal_move, temp_rubberband = player.rubberband_score(board_size, rubberband_edges, player.rubberband_coordinates, players[other_player-1].peg_coordinates)
+        temp_points, illegal_move, temp_rubberband = player.rubberband_score(board_size, rubberband_edges, player.rubberband_coordinates, players[other_player-1].peg_coordinates)
         
-#         if(illegal_move):
-#             temp_points = 0
-#         else:
-#             for i in range(len(temp_rubberband)):
-#                 player.rubberband_coordinates.append(temp_rubberband[i])
-#                 if((temp_rubberband[i] not in player.peg_coordinates) and temp_rubberband[i] not in players[other_player-1].peg_coordinates):
-#                     player.board[temp_rubberband[i]] = player_index+2  # Alternates between Player 1 and Player 2 --- #3: g, 4:b\
-#             player.point += temp_points
+        if(illegal_move):
+            temp_points = 0
+        else:
+            for i in range(len(temp_rubberband)):
+                player.rubberband_coordinates.append(temp_rubberband[i])
+                if((temp_rubberband[i] not in player.peg_coordinates) and temp_rubberband[i] not in players[other_player-1].peg_coordinates):
+                    player.board[temp_rubberband[i]] = player_index+2  # Alternates between Player 1 and Player 2 --- #3: g, 4:b\
+            player.point += temp_points
 
-#         # Switch players after sweeping through all rubberband squares.
-#         player_index = 2
-#         other_player = 1
+        # Switch players after sweeping through all rubberband squares.
+        player_index = 2
+        other_player = 1
 
-#     # print("-----")
-#     # display_board(players[0].board, board_size[0], board_size[1])
-#     # print("-----")
-#     # display_board(players[1].board, board_size[0], board_size[1])
-#     # print("-----")
+    # print("-----")
+    # display_board(players[0].board, board_size[0], board_size[1])
+    # print("-----")
+    # display_board(players[1].board, board_size[0], board_size[1])
+    # print("-----")
 
-# # Calculate and announce the winner
-# print(f"{players[0].name}: {players[0].point} points, {players[1].name}: {players[1].point} points")
-# if(players[0].point > players[1].point):
-#     print(f"{players[0].name} wins!")
-# elif(players[0].point < players[1].point):
-#     print(f"{players[1].name} wins!")
-# else:
-#     print(f"It is a tie! {players[0].name} started first, {players[0].name} wins!")
+# Calculate and announce the winner
+print(f"{players[0].name}: {players[0].point} points, {players[1].name}: {players[1].point} points")
+if(players[0].point > players[1].point):
+    print(f"{players[0].name} wins!")
+elif(players[0].point < players[1].point):
+    print(f"{players[1].name} wins!")
+else:
+    print(f"It is a tie! {players[0].name} started first, {players[0].name} wins!")
