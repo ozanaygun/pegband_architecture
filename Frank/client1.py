@@ -9,7 +9,7 @@ import prototype
 # Connect to the server
 server_ip = '0.0.0.0'
 server_port = 4000
-player = prototype.Player(0, 0, [], 0, 0, 0, 0)
+player = prototype.Player(0, 0, [], 0, 0)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((server_ip, server_port))
 client_socket.send(str(player.name).encode())
