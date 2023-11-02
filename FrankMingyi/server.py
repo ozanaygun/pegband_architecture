@@ -8,8 +8,7 @@ from shapely.geometry import Polygon
 from shapely.ops import cascaded_union
 
 # Define the game board size and initial state
-n = 8
-board_size = (n, n)
+board_size = (8, 8)
 num_pegs = 4
 num_rubberbands = 1
 board = [0] * (board_size[0] * board_size[1])
@@ -215,6 +214,8 @@ board_info_1 = f"{board_size[0]} {board_size[1]} {num_pegs} {num_rubberbands} {1
 players[0].socket.send(board_info_1)
 board_info_2 = f"{board_size[0]} {board_size[1]} {num_pegs} {num_rubberbands} {2}\n".encode()
 players[1].socket.send(board_info_2)
+
+time.sleep(0.3)
 
 ######
 # Peg placement phase 

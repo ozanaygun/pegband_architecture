@@ -12,8 +12,8 @@ random.seed(0)
 # Define the game board size and initial state
 n = 17
 board_size = (n, n)
-num_pegs = 6
-num_rubberbands = 3
+num_pegs = 3
+num_rubberbands = 2
 board = [0] * (board_size[0] * board_size[1])
 
 class Player:
@@ -288,14 +288,17 @@ class Player:
         # print(position)
         self.peg_coordinates.append(position)
         self.polygon_candidates = self.find_polygon(self.peg_coordinates, self.enemy_pegs, self.polygon_candidates)
-        return position
+        return int(position)
 
     def place_rubberbands(self):
         # Fill this function to return your move to place your rubberbands to the pegs
         if len(self.rubberbands_sequence) == 0:
             _, _, self.rubberbands_sequence = self.evaluate(self.peg_coordinates, self.polygon_candidates, self.enemy_pegs, self.enemy_polygon_candidates)
         # print(self.rubberbands_sequence, self.rubberbands_sequence_index)
-        temp = self.rubberbands_sequence[self.rubberbands_sequence_index]
+        if self.rubberbands_sequence_index < len(self.rubberbands_sequence):
+            temp = self.rubberbands_sequence[self.rubberbands_sequence_index]
+        else:
+            temp = np.random.choice(self.peg_coordinates)
         temp = self.sort_clockwise(temp, self.board_length)
         self.rubberbands_sequence_index += 1
         return temp

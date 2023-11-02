@@ -1,4 +1,4 @@
-import random,sys
+import random
 
 class PegbandPlayer2:
     def __init__(self, name, board_length, board_width, board, num_pegs, num_rubberbands, player_color):
@@ -13,12 +13,11 @@ class PegbandPlayer2:
 
     def place_pegs(self):
     # Fill this function to return your move to place a peg to the board
-        # while True:
-        #     position = random.randint(0, self.board_length * self.board_width - 1)
-        #     if self.board[position] == 0:
-        #         break
-        # self.peg_positions.append(position)
-        position = int(sys.stdin.readline())
+        while True:
+            position = random.randint(0, self.board_length * self.board_width - 1)
+            if self.board[position] == 0:
+                break
+        self.peg_positions.append(position)
         return position
     
 
@@ -28,6 +27,4 @@ class PegbandPlayer2:
         #for i in range(2):
             #position = random.randint(0, len(self.peg_positions)- 1)
         #    temp.append(self.peg_positions[i])
-        temp = list(map(int,sys.stdin.readline().split()))
-        return temp
-        # return self.peg_positions
+        return self.peg_positions
