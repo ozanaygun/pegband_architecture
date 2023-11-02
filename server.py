@@ -229,8 +229,11 @@ for round in range(num_pegs):
         try:
             # Send the current board with peg positions
             player.socket.send(str(board).encode())
+            start_time = time.time()
             position = int(player.socket.recv(2048).decode())
-
+            end_time = time.time()
+            remaining_time[player_index-1] -= end_time - start_time
+            print(f"Remaining time for {player.name}: {remaining_time[player_index-1]}")
             # Update the board with the player's peg
             if(position >= 0 and position < board_size[0] * board_size[1]):
                 if(board[position] == player_index):
@@ -274,8 +277,11 @@ for round in range(num_rubberbands):
         temp_points = 0
         temp_rubberband = []
         player.socket.send(str(player.board).encode())
-        
+        start_time = time.time()
         rubberband_edges_str = player.socket.recv(2048).decode()
+        end_time = time.time()
+        remaining_time[player_index-1] -= end_time - start_time
+        print(f"Rubberband has been placed. Remaining time for {player.name}: {remaining_time[player_index-1]}")
         rubberband_edges = ast.literal_eval(rubberband_edges_str)
         ## Rubberband validity conditions
         proposed_rubberband = []
