@@ -53,7 +53,7 @@ class Triangle:
     x1 = max(self.p0.x, self.p1.x, self.p2.x)
     y0 = min(self.p0.y, self.p1.y, self.p2.y)
     y1 = max(self.p0.y, self.p1.y, self.p2.y)
-    result = Line(self.p0, self.p1).getArea() + Line(self.p1, self.p2).getArea() + Line(self.p2, self.p0).getArea()
+    result = Line(self.p0, self.p1).getArea() + Line(self.p1, self.p2).getArea() + Line(self.p2, self.p0).getArea() - 3
     for i in range(x0, x1 + 1):
       for j in range(y0, y1 + 1):
         if claimed_map[i][j] == True and self.isPointInside(Point(i, j), False):
@@ -187,7 +187,9 @@ class PegbandPlayer:
   def placeBands(self, round_count: int, board_array: list[int]):
     # Fill this function to return your move to place your rubberbands to the pegs
     board = Board(board_array, self.N, self.side)
-    self.triangles = list(board.getAllTriangles())
-    self.triangles.sort(key = lambda triangle: triangle.getArea(board.claimed_map))
-
-    return [self.triangles[round_count].p0.flatten(self.N), self.triangles[round_count].p1.flatten(self.N), self.triangles[round_count].p2.flatten(self.N)]
+    triangles = list(board.getAllTriangles())
+    triangles.sort(key = lambda triangle: -triangle.getArea(board.claimed_map))
+    if len(triangles):
+      return [triangles[0].p0.flatten(self.N), triangles[0].p1.flatten(self.N), triangles[0].p2.flatten(self.N)]
+    else:
+      return [board.points[self.side][random.randint(0, self.peg_count)].flatten(self.N), board.points[self.side][random.randint(0, self.peg_count)].flatten(self.N)]
