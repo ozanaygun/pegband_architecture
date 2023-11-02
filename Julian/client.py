@@ -2,8 +2,6 @@ import socket
 import random
 import ast
 import time
-import pegband_player1
-import pegband_player2
 import pegband_player
 # Connect to the server
 server_ip = '0.0.0.0'
