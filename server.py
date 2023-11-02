@@ -9,9 +9,9 @@ from shapely.ops import cascaded_union
 import multiprocessing
 
 # Define the game board size and initial state
-board_size = (8, 8)
-num_pegs = 3
-num_rubberbands = 1
+board_size = (17, 17)
+num_pegs = 6
+num_rubberbands = 3
 board = [0] * (board_size[0] * board_size[1])
 # Initialize the server
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
