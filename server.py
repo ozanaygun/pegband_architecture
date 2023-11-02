@@ -12,6 +12,7 @@ import multiprocessing
 board_size = (17, 17)
 num_pegs = 6
 num_rubberbands = 3
+# Remaining times
 remaining_time = [120, 120]
 board = [0] * (board_size[0] * board_size[1])
 # Initialize the server
