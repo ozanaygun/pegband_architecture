@@ -134,8 +134,8 @@ class PegbandPlayer:
                         return (y_ + 1) * self.board_length + x_ + 1
                     return 0
             else:
-                x_ = self.board_length - new_enemy_peg[0]
-                y_ = self.board_length - new_enemy_peg[1]
+                x_ = self.board_length - 1 - new_enemy_peg[0]
+                y_ = self.board_length - 1 - new_enemy_peg[1]
                 if self.board[y_ * self.board_length + x_] == 0:
                     return y_ * self.board_length + x_
                 else:
@@ -180,8 +180,8 @@ class PegbandPlayer:
                         return (y_ + 1) * self.board_length + x_ + 1
                     return 0
             else:
-                x_ = self.board_length - new_enemy_peg[0]
-                y_ = self.board_length - new_enemy_peg[1]
+                x_ = self.board_length - 1 - new_enemy_peg[0]
+                y_ = self.board_length - 1 - new_enemy_peg[1]
                 if self.board[y_ * self.board_length + x_] == 0:
                     return y_ * self.board_length + x_
                 else:
