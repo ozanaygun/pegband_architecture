@@ -39,7 +39,7 @@ for round in range(num_pegs):
     # Receive the current board with peg positions
     board_str = client_socket.recv(2048).decode()
     board = ast.literal_eval(board_str)
-    player.board = board
+    player.board = board.copy()
     # Randomly choose a position to place a peg
     position = player.place_pegs()
 
