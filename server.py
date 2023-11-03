@@ -9,9 +9,9 @@ from shapely.ops import cascaded_union
 import multiprocessing
 
 # Define the game board size and initial state
-board_size = (17, 17)
+board_size = (20, 20)
 num_pegs = 6
-num_rubberbands = 3
+num_rubberbands = 4
 #### Remaining times
 remaining_time = [120, 120]
 board = [0] * (board_size[0] * board_size[1])
