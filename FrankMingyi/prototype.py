@@ -299,7 +299,7 @@ class Player:
         if self.rubberbands_sequence_index < len(self.rubberbands_sequence):
             temp = self.rubberbands_sequence[self.rubberbands_sequence_index]
         else:
-            temp = np.random.choice(self.peg_coordinates)
+            temp = [np.random.choice(self.peg_coordinates)]
         temp = self.sort_clockwise(temp, self.board_length)
         self.rubberbands_sequence_index += 1
         return list(temp)
