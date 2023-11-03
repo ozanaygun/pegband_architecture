@@ -129,6 +129,7 @@ class Player:
         return my_score, enemy_score, my_rubberbands
 
     def pegs_to_points(self, pegs):
+        pegs = list(pegs)
         points = []
         for i in range(len(pegs)):
             x1 = (int(pegs[i]%self.board_length) + 0.5) 
