@@ -301,7 +301,7 @@ class Player:
             temp = np.random.choice(self.peg_coordinates)
         temp = self.sort_clockwise(temp, self.board_length)
         self.rubberbands_sequence_index += 1
-        return temp
+        return list(temp)
 
     def rubberband_score(self, board_size, rubberband_edges, rubberband_coordinates, enemy_pegs, print_flag = False):
         cross_move = False
