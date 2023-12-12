@@ -1,5 +1,7 @@
 ## Pegband Game Architecture -- Ozan Aygun, Ozlem Yildiz
 
+## Heuristic Problem Solving, NYU 
+
 Required packages:
 
 -- pip install shapely
